@@ -42,6 +42,7 @@ export const generateCells = (): Cell[][] => {
             }
             
             //! potential threat
+            // count adjacent bombs for given `cell[row][col]`
             let numberOfBombs = 0;
             const topLeftBomb = rowIndex > 0 && colIndex > 0 ? cells[rowIndex-1][colIndex-1] : null;
             const topBomb = rowIndex > 0 ? cells[rowIndex-1][colIndex] : null;
@@ -71,3 +72,7 @@ export const generateCells = (): Cell[][] => {
 
     return cells;
 };
+
+export const handleKeyDown = () => {
+
+}
