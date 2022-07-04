@@ -4,8 +4,9 @@ import { generateCells } from "../utils";
 import Button from "../Button";
 
 import "./App.scss";
-import { Cell, Face, CellState } from '../types/index';
+import { Cell, Face, CellState, CellValue } from '../types/index';
 import { BOMBS } from "../constants";
+import { openAdjCells } from '../utils/index';
 
 const App: React.FC = () => {
     const [cells, setCells] = useState<Cell[][]>(generateCells());
@@ -47,7 +48,27 @@ const App: React.FC = () => {
 
         // start game 
         if (!live) {
+            // TODO 처음 클릭한 곳에 폭탄이 위치하지 않게 하기 
             setLive(true);
+        };
+
+        const   currentCell = cells[rowParam][colParam];
+        let     newCells = cells.slice();
+
+        // 이미 공개됐거나 깃발이 놓인 cell은 클릭 불가 
+        if ([CellState.flagged, CellState.visible].includes(currentCell.state)) {
+            return 
+        }
+
+        if (currentCell.value === CellValue.bomb) {
+            // TODO
+        } else if (currentCell.value === CellValue.none) {
+            // 인접한 모든 CellValue.none인 셀의 state를 visible로 변경 
+            newCells = openAdjCells(newCells, rowParam, colParam);
+            setCells(newCells);
+        } else {
+            newCells[rowParam][colParam].state = CellState.visible;
+            setCells(newCells);
         }
     };
 
